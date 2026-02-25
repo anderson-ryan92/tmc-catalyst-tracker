@@ -52,12 +52,12 @@ TMC_TICKER = "TMC"
 # Sources to scrape
 SOURCES = {
     "tmc_ir": {
-        "url": "https://investors.metals.co/news-releases",
+        "url": "https://investors.metals.co/news-events/press-releases",
         "label": "TMC Investor Relations",
         "category": "corporate",
     },
     "noaa_eis": {
-        "url": "https://www.fisheries.noaa.gov/national/marine-minerals",
+        "url": "https://oceanservice.noaa.gov/deep-seabed-mining/",
         "label": "NOAA Marine Minerals",
         "category": "regulatory",
     },
