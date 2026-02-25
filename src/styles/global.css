@@ -1,0 +1,71 @@
+:root {
+  --bg-primary: #0a0e17;
+  --bg-card: #131a28;
+  --bg-card-hover: #182033;
+  --border: rgba(56, 189, 248, 0.08);
+  --border-hover: rgba(56, 189, 248, 0.18);
+  --text-primary: #e8ecf4;
+  --text-secondary: #7a8ba8;
+  --text-muted: #4a5874;
+  --accent-cyan: #38bdf8;
+  --accent-teal: #2dd4bf;
+  --accent-emerald: #34d399;
+  --accent-amber: #fbbf24;
+  --accent-red: #f87171;
+  --accent-violet: #a78bfa;
+  --glow-cyan: rgba(56, 189, 248, 0.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.15); border-radius: 3px; }
+
+input:focus { border-color: rgba(56, 189, 248, 0.3) !important; outline: none; }
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(52, 211, 153, 0); }
+}
+
+@keyframes badgeFade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.65; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 1024px) {
+  .main-grid { grid-template-columns: 1fr !important; }
+  .header, .hero-section, .main-grid, .site-footer {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .header { flex-direction: column !important; gap: 1rem !important; }
+  .header-meta { align-items: flex-start !important; }
+  .status-banner { flex-direction: column !important; align-items: flex-start !important; }
+  .key-metrics { width: 100% !important; justify-content: space-between !important; }
+}
