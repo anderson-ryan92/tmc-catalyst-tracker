@@ -46,7 +46,7 @@ TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 ALPHA_VANTAGE_KEY = os.environ.get("ALPHA_VANTAGE_KEY")
 FMP_API_KEY = os.environ.get("FMP_API_KEY")  # financialmodelingprep.com
 
-CLAUDE_MODEL = "claude-sonnet-4-5-20250514"
+CLAUDE_MODEL = "claude-sonnet-4-5-20250929"
 TMC_TICKER = "TMC"
 
 # Sources to scrape
