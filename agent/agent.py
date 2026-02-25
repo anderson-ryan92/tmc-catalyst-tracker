@@ -319,6 +319,7 @@ CRITICAL RULES:
 - Only report REAL changes backed by the scraped data. Do not fabricate or speculate.
 - Respect `agent_locked: true` catalysts — do NOT suggest changes to locked catalysts.
 - For news deduplication: check headlines against existing news. Don't add duplicates.
+- NEWS QUALITY FILTER: Only include news that is substantively relevant to TMC's regulatory progress, corporate developments, partnerships, financials, or market catalysts. SKIP generic clickbait like "If You'd Invested $1,000...", listicles ("3 Stocks to Buy"), price prediction articles, and speculative opinion pieces with no new information. If a headline is primarily designed to generate clicks rather than inform investors about material developments, exclude it.
 - Be conservative. If something is ambiguous, flag it in `manual_review` rather than making a change.
 
 Respond with ONLY valid JSON matching this schema:
