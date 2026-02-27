@@ -19,7 +19,6 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isDemo, setIsDemo] = useState(false);
-  const [filter, setFilter] = useState("all");
   const [showSetup, setShowSetup] = useState(false);
 
   // Load demo data on mount, or connect to Supabase if env vars are set
@@ -65,8 +64,16 @@ export default function App() {
     }
   }, [connectSupabase, loadDemoData]);
 
-  const filteredCatalysts = filter === "all" ? catalysts : catalysts.filter((c) => c.category === filter);
-  const filters = ["all", "regulatory", "corporate", "market", "policy"];
+  const IMPACT_ORDER = { critical: 0, high: 1, medium: 2, low: 3 };
+  const STATUS_ORDER = { pending: 0, in_progress: 1, upcoming: 2, completed: 3, cancelled: 4 };
+
+  const sortedCatalysts = [...catalysts].sort((a, b) => {
+    const statusDiff = (STATUS_ORDER[a.status] ?? 9) - (STATUS_ORDER[b.status] ?? 9);
+    if (statusDiff !== 0) return statusDiff;
+    return (IMPACT_ORDER[a.impact] ?? 9) - (IMPACT_ORDER[b.impact] ?? 9);
+  });
+
+  const filteredCatalysts = sortedCatalysts;
 
   if (loading) {
     return (
@@ -98,7 +105,7 @@ export default function App() {
 
         {showSetup && <SetupPanel onConnect={connectSupabase} error={error} />}
 
-        <HeroStatus config={config} />
+        <HeroStatus config={config} catalystCount={filteredCatalysts.length} />
 
         {/* ─── Main Grid ─── */}
         <main className="main-grid" style={{ maxWidth: 1400, margin: "0 auto", padding: "0 3rem 4rem", display: "grid", gridTemplateColumns: "1fr 380px", gap: "2.5rem" }}>
@@ -111,35 +118,10 @@ export default function App() {
               </span>
             </div>
 
-            {/* Filters */}
-            <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.5rem", flexWrap: "wrap" }}>
-              {filters.map((f) => (
-                <button
-                  key={f}
-                  onClick={() => setFilter(f)}
-                  style={{
-                    background: filter === f ? "rgba(56,189,248,0.06)" : "transparent",
-                    border: `1px solid ${filter === f ? "var(--accent-cyan)" : "var(--border)"}`,
-                    color: filter === f ? "var(--accent-cyan)" : "var(--text-muted)",
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: "0.75rem",
-                    padding: "6px 14px",
-                    borderRadius: 20,
-                    cursor: "pointer",
-                    transition: "all 0.25s ease",
-                    letterSpacing: "0.02em",
-                    textTransform: "capitalize",
-                  }}
-                >
-                  {f}
-                </button>
-              ))}
-            </div>
-
             {/* Cards */}
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               {filteredCatalysts.map((c, i) => (
-                <CatalystCard key={c.id} catalyst={c} animDelay={0.1 + i * 0.08} />
+                <CatalystCard key={c.id} catalyst={{ ...c, rank: i + 1 }} animDelay={0.1 + i * 0.08} />
               ))}
               {filteredCatalysts.length === 0 && (
                 <div style={{ textAlign: "center", padding: "3rem", color: "var(--text-muted)", fontSize: "0.85rem" }}>

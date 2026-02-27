@@ -85,24 +85,6 @@ export default function CatalystCard({ catalyst, animDelay = 0 }) {
         {/* Title area */}
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: 3, flexWrap: "wrap" }}>
-            <span
-              style={{
-                fontSize: "0.65rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.1em",
-                padding: "2px 7px",
-                borderRadius: 4,
-                fontWeight: 500,
-                color: cat.text,
-                background: cat.bg,
-              }}
-            >
-              {catalyst.category}
-            </span>
-            <span style={{ fontSize: "0.68rem", display: "flex", alignItems: "center", gap: 4, color: statusColor }}>
-              <span style={{ width: 5, height: 5, borderRadius: "50%", background: statusColor }} />
-              {STATUS_LABELS[catalyst.status] || catalyst.status}
-            </span>
             {recentlyUpdated && (
               <span
                 style={{

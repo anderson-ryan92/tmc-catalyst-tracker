@@ -1,10 +1,9 @@
-export default function HeroStatus({ config }) {
+export default function HeroStatus({ config, catalystCount }) {
   if (!config) return null;
 
   const metrics = [
     { value: `~${config.days_to_decision || "—"}`, label: "Days to Est.\nDecision", color: "#fbbf24" },
-    { value: config.pending_catalysts || 0, label: "Pending\nCatalysts", color: "#e8ecf4" },
-    { value: config.completed_milestones || 0, label: "Completed\nMilestones", color: "#34d399" },
+    { value: catalystCount || 0, label: "Active\nCatalysts", color: "#e8ecf4" },
   ];
 
   return (

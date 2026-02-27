@@ -318,8 +318,27 @@ Your job is to compare the scraped data against the current DB state and identif
 CRITICAL RULES:
 - Only report REAL changes backed by the scraped data. Do not fabricate or speculate.
 - Respect `agent_locked: true` catalysts — do NOT suggest changes to locked catalysts.
+- CATALYST STATUS CLASSIFICATION: This is an investor-facing catalyst tracker. Status must reflect whether the EVENT ITSELF has occurred, NOT whether its effects are ongoing.
+  * "upcoming" — The event has a known or estimated future date and has not happened yet (e.g., an upcoming ISA meeting, a scheduled earnings report).
+  * "pending" — The event is expected but has no firm date, and we are waiting for a decision or outcome (e.g., waiting for NOAA to issue a permit decision).
+  * "in_progress" — The event is actively underway RIGHT NOW with a defined start and end (e.g., a multi-week council session that is currently in session, a public comment period that is currently open).
+  * "completed" — The event has happened. Period. Even if the event's effects are ongoing, if the event itself occurred in the past, it is COMPLETED. Examples: An executive order was signed = completed. A capital raise closed = completed. A rule was finalized = completed. A test was finished = completed. Do NOT mark these as "in_progress" just because their effects persist.
+  * "cancelled" — The event was called off and will not happen.
+- Only "upcoming", "pending", and "in_progress" catalysts are shown on the site. Completed catalysts are hidden. So marking something as completed effectively removes it from the tracker.
 - For news deduplication: check headlines against existing news. Don't add duplicates.
-- NEWS QUALITY FILTER: Only include news that is substantively relevant to TMC's regulatory progress, corporate developments, partnerships, financials, or market catalysts. SKIP generic clickbait like "If You'd Invested $1,000...", listicles ("3 Stocks to Buy"), price prediction articles, and speculative opinion pieces with no new information. If a headline is primarily designed to generate clicks rather than inform investors about material developments, exclude it.
+- NEWS QUALITY FILTER: 
+  * INCLUDE: 
+    - Material regulatory filings (NOAA, ISA, SEC Form 8-K/10-Q).
+    - Specific dates for hearings, sessions, or public comment periods.
+    - Capacity updates (e.g., vessel readiness, nodule processing tests).
+    - Geopolitical shifts (e.g., specific mentions of "Project Vault" or EO 14285 progress).
+    - Institutional shifts (e.g., major new 13D/G filings or price target changes from reputable banks).
+  * EXCLUDE:
+    - Retrospective "What If" articles (e.g., "If You Invested $1,000 in 2021...").
+    - Generic market listicles (e.g., "3 Mining Stocks to Watch," "Best Stocks Under $10").
+    - Automated price-action summaries (e.g., "Why TMC stock dropped 5% today" based purely on technicals).
+    - Low-signal "Bull Case" opinion pieces with no new data.
+    - AI-generated summaries of old news releases.
 - Be conservative. If something is ambiguous, flag it in `manual_review` rather than making a change.
 
 Respond with ONLY valid JSON matching this schema:

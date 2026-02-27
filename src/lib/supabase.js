@@ -38,7 +38,7 @@ export async function fetchAllData(client) {
 
   const [config, catalysts, milestones, news, market] = await Promise.all([
     client.query("site_config", "select=*&id=eq.1"),
-    client.query("catalysts", "select=*&is_visible=eq.true&order=rank.asc"),
+    client.query("catalysts", "select=*&is_visible=eq.true&status=neq.completed&status=neq.cancelled&order=rank.asc"),
     client.query("permit_milestones", "select=*&order=sort_order.asc"),
     client.query("news_items", `select=*&is_visible=eq.true&published_at=gte.${sevenDaysAgo}&order=published_at.desc&limit=10`),
     client.query("market_latest", "select=*"),
