@@ -2,14 +2,17 @@ import { ExternalIcon } from "./Icons";
 import { timeAgo } from "../lib/utils";
 
 export default function NewsFeed({ news }) {
-  if (!news?.length) return null;
-
   return (
     <div style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: 14, padding: "1.5rem" }}>
       <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: "1.05rem", fontWeight: 400, marginBottom: "1.25rem" }}>
         Latest News
       </div>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      {(!news || news.length === 0) ? (
+        <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", padding: "1rem 0" }}>
+          No news from the past 7 days.
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column" }}>
         {news.map((n, i) => (
           <a
             key={n.id || i}
@@ -54,7 +57,8 @@ export default function NewsFeed({ news }) {
             <div style={{ fontSize: "0.66rem", color: "var(--text-muted)" }}>{timeAgo(n.published_at)}</div>
           </a>
         ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
