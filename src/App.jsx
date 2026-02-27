@@ -3,7 +3,7 @@ import { createSupabaseClient, fetchAllData } from "./lib/supabase";
 import { DEMO_CONFIG, DEMO_CATALYSTS, DEMO_MILESTONES, DEMO_NEWS, DEMO_MARKET } from "./data/demo";
 import Header from "./components/Header";
 import SetupPanel from "./components/SetupPanel";
-import HeroStatus from "./components/HeroStatus";
+import PermitProgress from "./components/PermitProgress";
 import CatalystCard from "./components/CatalystCard";
 import MarketSnapshot from "./components/MarketSnapshot";
 import PermitTimeline from "./components/PermitTimeline";
@@ -105,7 +105,7 @@ export default function App() {
 
         {showSetup && <SetupPanel onConnect={connectSupabase} error={error} />}
 
-        <HeroStatus config={config} catalystCount={filteredCatalysts.length} />
+        <PermitProgress config={config} catalystCount={filteredCatalysts.length} />
 
         {/* ─── Main Grid ─── */}
         <main className="main-grid" style={{ maxWidth: 1400, margin: "0 auto", padding: "0 3rem 4rem", display: "grid", gridTemplateColumns: "1fr 380px", gap: "2.5rem" }}>
@@ -117,6 +117,7 @@ export default function App() {
                 {catalysts.length} EVENTS
               </span>
             </div>
+
 
             {/* Cards */}
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
