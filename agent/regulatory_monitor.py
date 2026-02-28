@@ -10,6 +10,7 @@ import os
 import hashlib
 import json
 import re
+import time
 from datetime import datetime, timezone
 from urllib.request import Request, urlopen
 from urllib.error import URLError
@@ -61,6 +62,11 @@ SOURCES = {
         "name": "S.2860 - Senate Bill",
         "url": "https://www.congress.gov/bill/119th-congress/senate-bill/2860",
         "description": "Senate bill related to deep sea mining - tracks bill status, committee actions, votes.",
+    },
+    "sec_filings": {
+        "name": "TMC SEC Filings (EDGAR)",
+        "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001798562&owner=include&count=10",
+        "description": "TMC's SEC EDGAR filings - tracks 8-Ks (material events), 10-Qs, 10-Ks, and other filings. 8-Ks are the fastest signal of permit decisions or material corporate events.",
     },
 }
 
@@ -254,6 +260,30 @@ Focus on: bill status, permit milestones, new filings, committee actions, commen
         return "Change detected (AI summary failed)"
 
 
+def fetch_sec_filings(cik: str) -> str:
+    """Fetch recent filings from SEC EDGAR API. Free, no key needed."""
+    api_url = f"https://data.sec.gov/submissions/CIK{cik}.json"
+    req = Request(api_url, headers={
+        "User-Agent": "TMCTracker ryan@tmctracker.com",
+        "Accept": "application/json",
+    })
+    try:
+        with urlopen(req, timeout=30) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+        recent = data.get("filings", {}).get("recent", {})
+        forms = recent.get("form", [])
+        dates = recent.get("filingDate", [])
+        descriptions = recent.get("primaryDocDescription", [])
+        accessions = recent.get("accessionNumber", [])
+        parts = [f"SEC Filings for CIK {cik} ({data.get('name', 'TMC')})"]
+        for i in range(min(15, len(forms))):
+            parts.append(f"{dates[i]} | {forms[i]} | {descriptions[i] if i < len(descriptions) else 'N/A'} | {accessions[i]}")
+        return "\n".join(parts)
+    except (URLError, Exception) as e:
+        print(f"  ERROR fetching SEC EDGAR API: {e}")
+        return ""
+
+
 def monitor_source(source_id: str, config: dict):
     """Check a single source for changes."""
     print(f"\n📡 Checking: {config['name']}")
@@ -271,10 +301,13 @@ def monitor_source(source_id: str, config: dict):
         text = fetch_congress_bill(119, "hr", 4018)
     elif source_id == "s_2860":
         text = fetch_congress_bill(119, "s", 2860)
+    elif source_id == "sec_filings":
+        text = fetch_sec_filings("0001798562")
     else:
         text = fetch_page(config["url"])
-    if not text:
-        insert_update(source_id, config["name"], config["url"], "", "Failed to fetch page", "", "error")
+    if not text or len(text) < 50:
+        print("   ⚠️  Insufficient data returned — skipping to avoid false change detection")
+        insert_update(source_id, config["name"], config["url"], "", "Failed to fetch or incomplete data", "", "error")
         return
 
     new_hash = content_hash(text)
@@ -327,6 +360,7 @@ def main():
             monitor_source(source_id, config)
         except Exception as e:
             print(f"   ❌ Error monitoring {source_id}: {e}")
+        time.sleep(2)
 
     print("\n✅ Regulatory monitor complete")
 

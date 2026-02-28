@@ -6,6 +6,7 @@ const SOURCE_META = {
   regulations_gov: { icon: "📋", color: "#2dd4bf", label: "DSHMRA Docket" },
   hr_4018: { icon: "🏠", color: "#a78bfa", label: "HR 4018" },
   s_2860: { icon: "🏛️", color: "#fbbf24", label: "S.2860" },
+  sec_filings: { icon: "📄", color: "#f87171", label: "SEC Filings" },
 };
 
 const STATUS_STYLE = {
@@ -77,7 +78,7 @@ export default function RegulatoryIntelPage() {
         </div>
 
         {/* ─── Source Status Cards ─── */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1rem", marginBottom: "2rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "1rem", marginBottom: "2rem" }}>
           {sources.map((src) => {
             const meta = SOURCE_META[src.source_id] || { icon: "📄", color: "#94a3b8", label: src.source_id };
             return (
