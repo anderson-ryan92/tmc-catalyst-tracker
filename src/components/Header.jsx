@@ -4,6 +4,7 @@ import { navigate } from "../lib/router";
 const NAV_ITEMS = [
   { id: "", label: "Dashboard" },
   { id: "calculator", label: "Nodule Calculator" },
+  { id: "regulatory", label: "Regulatory Intel" },
 ];
 
 export default function Header({ config, isDemo, showSetup, onToggleSetup, currentPage }) {

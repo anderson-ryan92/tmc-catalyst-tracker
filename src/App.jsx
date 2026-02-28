@@ -11,6 +11,7 @@ import PermitTimeline from "./components/PermitTimeline";
 import NewsFeed from "./components/NewsFeed";
 import Footer from "./components/Footer";
 import CalculatorPage from "./pages/CalculatorPage";
+import RegulatoryIntelPage from "./pages/RegulatoryIntelPage";
 
 export default function App() {
   const page = useHashRoute();
@@ -103,6 +104,8 @@ export default function App() {
         {/* ─── Page Router ─── */}
         {page === "calculator" ? (
           <CalculatorPage />
+        ) : page === "regulatory" ? (
+          <RegulatoryIntelPage />
         ) : (
           <>
             <PermitProgress config={config} catalystCount={filteredCatalysts.length} />
