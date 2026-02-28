@@ -48,8 +48,8 @@ SOURCES = {
         "description": "NOAA's main DSM page - tracks application status, rulemaking updates, and policy guidance.",
     },
     "regulations_gov": {
-        "name": "DSHMRA Docket (Regulations.gov)",
-        "url": "https://www.regulations.gov/docket/NOAA-NOS-2025-0108",
+        "name": "TMC Application Dockets (Regulations.gov)",
+        "url": "https://www.regulations.gov/docket/NOAA-NOS-2025-0702",
         "description": "Federal docket for DSHMRA rulemaking - tracks public comments, new filings, and docket activity.",
     },
     "hr_4018": {
@@ -261,7 +261,12 @@ def monitor_source(source_id: str, config: dict):
 
     # Fetch current page — use APIs where available
     if source_id == "regulations_gov":
-        text = fetch_regulations_gov_docket("NOAA-NOS-2025-0108")
+        parts = []
+        for docket_id in ["NOAA-NOS-2025-0702", "NOAA-NOS-2025-1330"]:
+            result = fetch_regulations_gov_docket(docket_id)
+            if result:
+                parts.append(result)
+        text = "\n\n".join(parts)
     elif source_id == "hr_4018":
         text = fetch_congress_bill(119, "hr", 4018)
     elif source_id == "s_2860":
