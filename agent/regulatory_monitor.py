@@ -307,7 +307,6 @@ def monitor_source(source_id: str, config: dict):
         text = fetch_page(config["url"])
     if not text or len(text) < 50:
         print("   ⚠️  Insufficient data returned — skipping to avoid false change detection")
-        insert_update(source_id, config["name"], config["url"], "", "Failed to fetch or incomplete data", "", "error")
         return
 
     new_hash = content_hash(text)

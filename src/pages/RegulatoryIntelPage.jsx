@@ -47,7 +47,7 @@ export default function RegulatoryIntelPage() {
 
     Promise.all([
       fetch(`${url}/rest/v1/regulatory_sources?select=*&is_active=eq.true&order=source_id`, { headers }).then(r => r.json()),
-      fetch(`${url}/rest/v1/regulatory_updates?select=*&order=detected_at.desc&limit=50`, { headers }).then(r => r.json()),
+      fetch(`${url}/rest/v1/regulatory_updates?select=*&status=neq.error&order=detected_at.desc&limit=50`, { headers }).then(r => r.json()),
     ])
       .then(([src, upd]) => {
         setSources(src || []);
