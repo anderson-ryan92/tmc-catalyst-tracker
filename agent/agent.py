@@ -502,7 +502,7 @@ def apply_catalyst_updates(updates: list[dict]) -> list[dict]:
             .select("*") \
             .eq("id", catalyst_id) \
             .eq("agent_locked", False) \
-            .single() \
+            .maybe_single() \
             .execute()
 
         if not current.data:
