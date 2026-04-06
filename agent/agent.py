@@ -505,7 +505,7 @@ def apply_catalyst_updates(updates: list[dict]) -> list[dict]:
             .maybe_single() \
             .execute()
 
-        if not current.data:
+        if current is None or not current.data:
             log.info(f"Skipping catalyst {catalyst_id} (not found or agent_locked)")
             continue
 
